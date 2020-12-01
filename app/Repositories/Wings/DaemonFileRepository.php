@@ -74,6 +74,31 @@ class DaemonFileRepository extends DaemonRepository
     }
 
     /**
+     * Saves file from URL.
+     *
+     * @param string $url
+     * @param string $path
+     * @return \Psr\Http\Message\ResponseInterface
+     *
+     * @throws \Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException
+     */
+    public function downloadFromUrl(string $url, string $path): ResponseInterface
+    {
+        Assert::isInstanceOf($this->server, Server::class);
+
+        try {
+            return $this->getHttpClient()->post(
+                sprintf('/api/servers/%s/files/writeUrl', $this->server->uuid),
+                [
+                    'query' => ['url' => $url, 'path' => $path],
+                ]
+            );
+        } catch (TransferException $exception) {
+            throw new DaemonConnectionException($exception);
+        }
+    }
+
+    /**
      * Return a directory listing for a given path.
      *
      * @param string $path

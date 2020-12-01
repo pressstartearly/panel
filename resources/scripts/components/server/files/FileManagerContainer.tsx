@@ -18,6 +18,7 @@ import UploadButton from '@/components/server/files/UploadButton';
 import ServerContentBlock from '@/components/elements/ServerContentBlock';
 import { useStoreActions } from '@/state/hooks';
 import ErrorBoundary from '@/components/elements/ErrorBoundary';
+import AddFromUrlButton from '@/components/server/files/AddFromUrlButton';
 
 const sortFiles = (files: FileObject[]): FileObject[] => {
     return files.sort((a, b) => a.name.localeCompare(b.name))
@@ -87,6 +88,7 @@ export default () => {
                             <ErrorBoundary>
                                 <div css={tw`flex flex-wrap-reverse justify-end mt-4`}>
                                     <NewDirectoryButton css={tw`w-full flex-none mt-4 sm:mt-0 sm:w-auto sm:mr-4`}/>
+                                    <AddFromUrlButton css={tw`w-full flex-none mt-4 sm:mt-0 sm:w-auto sm:mr-4`}/>
                                     <UploadButton css={tw`flex-1 mr-4 sm:flex-none sm:mt-0`}/>
                                     <NavLink
                                         to={`/server/${id}/files/new${window.location.hash}`}

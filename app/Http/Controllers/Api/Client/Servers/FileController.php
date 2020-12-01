@@ -4,6 +4,7 @@ namespace Pterodactyl\Http\Controllers\Api\Client\Servers;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Response;
+use Pterodactyl\Http\Requests\Api\Client\Servers\Files\DownloadFromUrlRequest;
 use Pterodactyl\Models\Server;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
@@ -145,6 +146,25 @@ class FileController extends ClientApiController
         $this->fileRepository->setServer($server)->putContent(
             $this->encode($request->get('file')),
             $request->getContent()
+        );
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * Downloads contents from URL to server.
+     *
+     * @param \Pterodactyl\Http\Requests\Api\Client\Servers\Files\DownloadFromUrlRequest $request
+     * @param \Pterodactyl\Models\Server $server
+     * @return \Illuminate\Http\JsonResponse
+     *
+     * @throws \Pterodactyl\Exceptions\Http\Connection\DaemonConnectionException
+     */
+    public function downloadFromUrl(DownloadFromUrlRequest $request, Server $server): JsonResponse
+    {
+        $this->fileRepository->setServer($server)->downloadFromUrl(
+            $this->encode($request->get('url')),
+            $request->get('root')
         );
 
         return new JsonResponse([], Response::HTTP_NO_CONTENT);
